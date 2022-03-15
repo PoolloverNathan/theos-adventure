@@ -13,19 +13,20 @@ const Coin = SpriteKind.create();
 
 function createCorg () {
     const myCorg = corgio.create(SpriteKind.Player)
-    myCorg.horizontalMovement()
-    myCorg.verticalMovement()
+    myCorg.horizontalMovement(false)
+    myCorg.verticalMovement(false)
     scene.cameraFollowSprite(myCorg.sprite)
     return myCorg
 }
+
 
 
 let goalStage = 0;
 scene.onOverlapTile(SpriteKind.Player, assets.tile`flagpole`, (sprite, location) => {
     if (goalStage !== 0) return;
     tiles.placeOnTile(sprite, location)
-    pause(500);
     player.horizontalMovement(false)
+    pause(500);
     player.sprite.setVelocity(0, player.sprite.vy)
     goalStage = 1;
 })
@@ -47,6 +48,8 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`doghouseRight`, (sprite: Spri
 
 let player: Corgio = createCorg();
 let owplayer: Sprite = null;
+
+player.sprite.setVelocity(player.maxMoveVelocity, 0);
 
 function transitionToOverworld() {
     player.verticalMovement(false);
@@ -113,3 +116,13 @@ function deathAnimation(f: number) {
     }
     pause(20);
 }
+
+player.sprite.setStayInScreen(false);
+tiles.placeOnTile(player.sprite, new tiles.Location(-1, 12, new tiles.TileMap(16)))
+
+scene.onOverlapTile(SpriteKind.Player, assets.tile`bedRight`, () => {
+    player.sprite.setVelocity(0, 0);
+    player.horizontalMovement()
+    player.verticalMovement()
+    player.sprite.setStayInScreen(true);
+});
