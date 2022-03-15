@@ -9,13 +9,7 @@ namespace myTiles {
     //% fixedInstance jres blockIdentity=images._tile
     export const tile4 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
-    export const tile6 = image.ofBuffer(hex``);
-    //% fixedInstance jres blockIdentity=images._tile
-    export const tile7 = image.ofBuffer(hex``);
-    //% fixedInstance jres blockIdentity=images._tile
     export const tile5 = image.ofBuffer(hex``);
-    //% fixedInstance jres blockIdentity=images._tile
-    export const tile8 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile9 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
@@ -28,8 +22,6 @@ namespace myTiles {
     export const tile12 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile13 = image.ofBuffer(hex``);
-    //% fixedInstance jres blockIdentity=images._tile
-    export const tile14 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile15 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
@@ -46,6 +38,14 @@ namespace myTiles {
     export const tile21 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile22 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile14 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile6 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile7 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile8 = image.ofBuffer(hex``);
 
     helpers._registerFactory("tilemap", function(name: string) {
         switch(helpers.stringTrim(name)) {
@@ -119,14 +119,8 @@ namespace myTiles {
             case "tile3":return tile3;
             case "doghouseSignEnd":
             case "tile4":return tile4;
-            case "doghouseSignStart":
-            case "tile6":return tile6;
-            case "doghouseLeft":
-            case "tile7":return tile7;
             case "doghouseRight":
             case "tile5":return tile5;
-            case "doghouseRoofLeft":
-            case "tile8":return tile8;
             case "doghouseRoofRight":
             case "tile9":return tile9;
             case "doghouseRoof":
@@ -139,8 +133,6 @@ namespace myTiles {
             case "tile12":return tile12;
             case "flagpole":
             case "tile13":return tile13;
-            case "flagpoleBase":
-            case "tile14":return tile14;
             case "shinyYellowBall":
             case "tile15":return tile15;
             case "flagpoleTop":
@@ -157,6 +149,14 @@ namespace myTiles {
             case "tile21":return tile21;
             case "bedRight":
             case "tile22":return tile22;
+            case "flagpoleBase":
+            case "tile14":return tile14;
+            case "doghouseSignStart":
+            case "tile6":return tile6;
+            case "doghouseLeft":
+            case "tile7":return tile7;
+            case "doghouseRoofLeft":
+            case "tile8":return tile8;
         }
         return null;
     })

@@ -22,29 +22,11 @@
         "tilemapTile": true,
         "displayName": "doghouseSignEnd"
     },
-    "tile6": {
-        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////93d3d3d3d3d7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7e3d3d3Q==",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "doghouseSignStart"
-    },
-    "tile7": {
-        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////93d3d3d3d3d7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7g==",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "doghouseLeft"
-    },
     "tile5": {
         "data": "hwQQABAAAADr7u7u7u7u7uvu7u7u7u7u6+7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "tilemapTile": true,
         "displayName": "doghouseRight"
-    },
-    "tile8": {
-        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAD/AAAAAAAA8MwPAAAAAADwzP///wAAAPDM293dAAAAz8zr7u4AAADPvO7u7gAAAM+87u7uAADwzLzu7u4AAPDM6+7u7gAA8Mzr7u7uAADPzOvu7u4AAM+87u7u7gAAz7zu7u7uAPDMvO7u7u4A8Mzr7u7u7g==",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "doghouseRoofLeft"
     },
     "tile9": {
         "data": "hwQQABAAAAAA8Mzr7u7u7gDwzLzu7u7uAADPvO7u7u4AAM+87u7u7gAAz8zr7u7uAADwzOvu7u4AAPDM6+7u7gAA8My87u7uAAAAz7zu7u4AAADPvO7u7gAAAM/M6+7uAAAA8Mzr7u4AAADwzP///wAAAPDMDwAAAAAAAP8AAAAAAAAAAAAAAA==",
@@ -81,12 +63,6 @@
         "mimeType": "image/x-mkcd-f4",
         "tilemapTile": true,
         "displayName": "flagpole"
-    },
-    "tile14": {
-        "data": "hwQQABAAAAAAAADw/////wAAAPDu7u7uAAAA8O7u7u4AAADw7u7u7gAAAPDu7u7u/////+7u7u4RERER7u7u7t3d3d3u7u7u3d3d3e7u7u7d3d3d7u7u7v/////u7u7uAAAA8O7u7u4AAADw7u7u7gAAAPDu7u7uAAAA8O7u7u4AAADw/////w==",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "flagpoleBase"
     },
     "tile15": {
         "data": "hwQQABAAAAAAAAD//wAAAAAA/xER/wAAAPARVVVVDwAAH1VVVVX1APBRVVVVVVUP8FFVVVVVVQ8fVVVVVVVV9R9VVVVVVVX1H1VVVVVVVfUfVVVVVVVV9fBVVVVVVVUP8FVVVVVVVQ8AX1VVVVX1AADwVVVVVQ8AAAD/VVX/AAAAAAD//wAAAA==",
@@ -135,6 +111,30 @@
         "mimeType": "image/x-mkcd-f4",
         "tilemapTile": true,
         "displayName": "bedRight"
+    },
+    "tile14": {
+        "data": "hwQQABAAAAAAAADw/////wAAAPARERERAAAA8OHu7u4AAADw4e7u7gAAAPDh7u7u/////+Hu7u4RERHx4e7u7t3d3f3h7u7u3d3d/eHu7u7d3d394e7u7v/////h7u7uAAAA8OHu7u4AAADw4e7u7gAAAPDh7u7uAAAA8OHu7u4AAADw/////w==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "flagpoleBase"
+    },
+    "tile6": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////xERERERERER7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7e3d3d3Q==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "doghouseSignStart"
+    },
+    "tile7": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////xERERERERER7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7g==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "doghouseLeft"
+    },
+    "tile8": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAD/AAAAAAAA8MwPAAAAAADwzP///wAAAPDMGxERAAAAz8zr7u4AAADPvO7u7gAAAM+87u7uAADwzLzu7u4AAPDM6+7u7gAA8Mzr7u7uAADPzOvu7u4AAM+87u7u7gAAz7zu7u7uAPDMvO7u7u4A8Mzr7u7u7g==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "doghouseRoofLeft"
     },
     "level1": {
         "id": "level1",

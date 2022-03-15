@@ -13,8 +13,8 @@ const Coin = SpriteKind.create();
 
 function createCorg () {
     const myCorg = corgio.create(SpriteKind.Player)
-    myCorg.horizontalMovement(false)
-    myCorg.verticalMovement(false)
+    myCorg.horizontalMovement()
+    myCorg.verticalMovement()
     scene.cameraFollowSprite(myCorg.sprite)
     return myCorg
 }
@@ -49,7 +49,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`doghouseRight`, (sprite: Spri
 let player: Corgio = createCorg();
 let owplayer: Sprite = null;
 
-player.sprite.setVelocity(player.maxMoveVelocity, 0);
+// player.sprite.setVelocity(player.maxMoveVelocity, 0);
 
 function transitionToOverworld() {
     player.verticalMovement(false);
@@ -117,12 +117,29 @@ function deathAnimation(f: number) {
     pause(20);
 }
 
+/*
 player.sprite.setStayInScreen(false);
+player.sprite.setFlag(SpriteFlag.GhostThroughWalls, true);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
+player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
 tiles.placeOnTile(player.sprite, new tiles.Location(-1, 12, new tiles.TileMap(16)))
 
 scene.onOverlapTile(SpriteKind.Player, assets.tile`bedRight`, () => {
     player.sprite.setVelocity(0, 0);
+    player.sprite.setFlag(SpriteFlag.GhostThroughWalls, false);
     player.horizontalMovement()
     player.verticalMovement()
     player.sprite.setStayInScreen(true);
-});
+});*/
+
+tiles.placeOnRandomTile(player.sprite, assets.tile`bedLeft`);
+player.sprite.x += 8;
