@@ -1,173 +1,97 @@
-class Map extends tiles.WorldMap {
-    backgroundColor: number
+abstract class Unlockable {
+    protected abstract _unlock(): void;
+    get unlocked() {
+        return (this.locks <= 0);
+    }
+    locks: number;
+    public unlock() {
+        this.locks--;
+        if (this.locks <= 0) {
+            this.locks = 0;
+            this._unlock();
+        }
+    }
 }
-class Level extends Map {
-    overworld: World
-}
-class World extends Map {
 
+class LevelLoader extends Unlockable {
+    constructor(public condition: () => boolean, public location: tiles.Location, public locks: number, public unlocks: Unlockable[]) {
+        super();
+    }
+    check(sprite: Sprite): boolean {
+        if (!this.unlocked) return false;
+        let tmc = sprite.tilemapLocation();
+        let trc = tmc.getNeighboringLocation(CollisionDirection.Left)
+        let tdc = tmc.getNeighboringLocation(CollisionDirection.Top);
+        let tcc = tdc.getNeighboringLocation(CollisionDirection.Left)
+        if (tmc === this.location || trc === this.location
+         || tdc === this.location || tcc === this.location) {
+            return this.condition();
+        }
+        return false;
+    }
+    _unlock() {
+        let tdc = this.location.getNeighboringLocation(CollisionDirection.Bottom);
+        let tcc = tdc.getNeighboringLocation(CollisionDirection.Right)
+        animateSetTile(tdc, assets.tile`bedFrontLeft`)
+        animateSetTile(tcc, assets.tile`bedFrontRight`)
+    }
 }
+
+class BlockerLine extends Unlockable {
+    direction: CollisionDirection.Right | CollisionDirection.Bottom
+    protected tileDirection: CollisionDirection.Left | CollisionDirection.Top
+    length: number;
+    constructor(public location: tiles.Location, size: number, public locks: number) {
+        super()
+        if (size === 0) throw undefined;
+        else if (size < 0) {this.direction = CollisionDirection.Bottom; this.tileDirection = CollisionDirection.Left;}
+        else {this.direction = CollisionDirection.Right; this.tileDirection = CollisionDirection.Top}
+        this.length = Math.abs(size);
+    }
+    _unlock() {
+        let l = this.location;
+        for (let i = 0; i < this.length; i++) {
+            animateSetTile(l, tiles.getTileAtLocation(l.getNeighboringLocation(this.tileDirection)))
+            l = l.getNeighboringLocation(this.direction)
+        }
+    }
+}
+
+
+
+let levels = [];
 
 const Coin = SpriteKind.create();
 
-
-function createCorg () {
-    const myCorg = corgio.create(SpriteKind.Player)
-    myCorg.horizontalMovement()
-    myCorg.verticalMovement()
-    scene.cameraFollowSprite(myCorg.sprite)
-    return myCorg
-}
-
-function SceneExplosion(effect: effects.ParticleEffect = null) {
-    const ss = new Sprite(image.screenImage().clone());
-    ss.setFlag(7680, true); // ;)
-    ss.setPosition(scene.screenWidth() / 2, scene.screenHeight() / 2)
-    return () => {
-        control.runInParallel(() => {
-            while (true) ss.startEffect(effect || effects.disintegrate);
-        })
-    }
-} 
-
-function explode(sprite: Sprite) {
+function explode(sprite: Sprite, rate: number = 500) {
     control.runInParallel(() => {
-        while (true) sprite.startEffect(effects.disintegrate);
+        while (1) {
+            sprite.startEffect(effects.disintegrate)
+            pause(rate);
+        }
     })
 }
 
-function TileExplosion(location: tiles.Location, effect: effects.ParticleEffect = null) {
-    const ts = tiles.createTileSprite(location, tiles.getTileAtLocation(location));
-    return () => explode(ts);
+function animateSetTile(location: tiles.Location, tile: Image, fixT: boolean = true, rate: number = null) {
+    let ti = tiles.getTileAtLocation(location).clone();
+    if (fixT) ti.replace(0, scene.backgroundColor());
+    let ts = tiles.createTileSprite(location, ti);
+    tiles.setTileAt(location, tile);
+    explode(ts, rate);
 }
 
-let goalStage = 0;
-scene.onOverlapTile(SpriteKind.Player, assets.tile`flagpole`, (sprite, location) => {
-    if (goalStage !== 0) return;
-    tiles.placeOnTile(sprite, location)
-    player.horizontalMovement(false)
-    pause(500);
-    player.sprite.setVelocity(0, player.sprite.vy)
-    goalStage = 1;
-    // SceneTransition()();
-})
-
-
-
-scene.onHitWall(SpriteKind.Player, (sprite: Sprite) => {
-    if (tiles.tileAtLocationEquals(player.sprite.tilemapLocation(), assets.tile`flagpoleBase`)) {
-        player.horizontalMovement(false);
-        player.verticalMovement(false);
-        pause(500);
-        player.sprite.setVelocity(player.maxMoveVelocity, 0);
-    }
-})
-
-scene.onOverlapTile(SpriteKind.Player, assets.tile`doghouseRight`, (sprite: Sprite, location: tiles.Location) => {
-    sprite.setVelocity(0, 0);
-    pause(500);
-    sprite.setFlag(SpriteFlag.Invisible, true)
-})
-
-let player: Corgio = createCorg();
-let owplayer: Sprite = null;
-
-// player.sprite.setVelocity(player.maxMoveVelocity, 0);
-
-function transitionToOverworld() {
-    player.verticalMovement(false);
-    player.horizontalMovement(false);
-    controller.moveSprite(player.sprite)
+function createCorg() {
+    const retCorg = corgio.create(SpriteKind.Player);
+    retCorg.horizontalMovement()
+    retCorg.verticalMovement()
+    scene.cameraFollowSprite(retCorg.sprite);
+    return retCorg
 }
 
-tiles.onMapLoaded((tilemap: tiles.WorldMap) => {
-    try {
-    tiles.createSpritesOnTiles(assets.tile`coin_placeholder`, Coin);
-    tiles.replaceAllTiles(assets.tile`coin_placeholder`, img``);
-    } catch (e) {
-        game.showLongText(e.stack, DialogLayout.Full);
-        game.reset();
-    }
-})
-
-tiles.onMapUnloaded((tilemap: tiles.WorldMap) => {
-    tiles.destroySpritesOfKind(Coin)
-})
-
-sprites.onCreated(Coin, function(sprite: Sprite) {
-    animation.runImageAnimation(sprite, assets.animation`coin`, 100, true);
-})
-
-/*const playerState = {
-    deathFrames: NaN,
-    dying: false
+function screenshot() {
+    const scSpt = new Sprite(image.screenImage().clone());
+    scSpt.z = -20;
+    scSpt.setFlag(7680, true);
+    scSpt.setPosition(scene.screenWidth() / 2, scene.screenHeight() / 2)
+    return scSpt;
 }
-
-
-
-forever(() => {
-    playerState.deathFrames--;
-    let debuggerInfo = JSON.stringify(playerState)
-    if (playerState.deathFrames <= 0) {
-        deathAnimation(playerState.deathFrames)
-    }
-    console.logValue("deathFrames", playerState.deathFrames)
-})*/
-
-scene.setBackgroundColor(9)
-tiles.setCurrentTilemap(tilemap`level1-1`)
-
-function die() {
-    music.powerDown.play()
-    explode(player.sprite);
-}
-
-scene.onOverlapTile(SpriteKind.Player, assets.tile`moltenCherryJuice`, function(sprite: Sprite, location: tiles.Location) {
-    // @ts-ignore-line
-    /*
-    if (player.sprite !== sprite | playerState.dying) return;
-    player.horizontalMovement(false);
-    // player.verticalMovement(false);
-    player.maxJump = 0;
-    player.sprite.vx = 0;
-    playerState.dying = true;
-    playerState.deathFrames = 10;
-    */
-    die();
-})
-
-function deathAnimation(f: number) {
-    const {sprite} = player;
-    f = Math.abs(f);
-    if (f > 0 && f <= 20) {
-        sprite.vy = 2;
-    }
-    pause(20);
-}
-
-/*
-player.sprite.setStayInScreen(false);
-player.sprite.setFlag(SpriteFlag.GhostThroughWalls, true);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false); player.verticalMovement(false);
-tiles.placeOnTile(player.sprite, new tiles.Location(-1, 12, new tiles.TileMap(16)))
-
-scene.onOverlapTile(SpriteKind.Player, assets.tile`bedRight`, () => {
-    player.sprite.setVelocity(0, 0);
-    player.sprite.setFlag(SpriteFlag.GhostThroughWalls, false);
-    player.horizontalMovement()
-    player.verticalMovement()
-    player.sprite.setStayInScreen(true);
-});*/
-
-tiles.placeOnRandomTile(player.sprite, assets.tile`bedLeft`);
-player.sprite.x += 8;
