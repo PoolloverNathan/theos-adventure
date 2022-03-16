@@ -19,7 +19,20 @@ function createCorg () {
     return myCorg
 }
 
+function SceneTransition(effect: effects.ParticleEffect = null) {
+    const ss = new Sprite(image.screenImage().clone());
+    ss.setFlag(7168 | 512, true);
+    ss.setPosition(scene.screenWidth() / 2, scene.screenHeight() / 2)
+    return () => {
+        control.runInParallel(() => {
+            while (true) ss.startEffect(effect || effects.disintegrate);
+        })
+    }
+} 
 
+function TileTransition(location: tiles.Location, effect: effects.ParticleEffect = null) {
+    
+}
 
 let goalStage = 0;
 scene.onOverlapTile(SpriteKind.Player, assets.tile`flagpole`, (sprite, location) => {
@@ -29,7 +42,10 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`flagpole`, (sprite, location)
     pause(500);
     player.sprite.setVelocity(0, player.sprite.vy)
     goalStage = 1;
+    // SceneTransition()();
 })
+
+
 
 scene.onHitWall(SpriteKind.Player, (sprite: Sprite) => {
     if (tiles.tileAtLocationEquals(player.sprite.tilemapLocation(), assets.tile`flagpoleBase`)) {
