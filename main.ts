@@ -21,7 +21,7 @@ function createCorg () {
 
 function SceneExplosion(effect: effects.ParticleEffect = null) {
     const ss = new Sprite(image.screenImage().clone());
-    ss.setFlag(7168 | 512, true);
+    ss.setFlag(7680, true); // ;)
     ss.setPosition(scene.screenWidth() / 2, scene.screenHeight() / 2)
     return () => {
         control.runInParallel(() => {
