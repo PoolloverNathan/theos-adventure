@@ -19,7 +19,7 @@ function createCorg () {
     return myCorg
 }
 
-function SceneTransition(effect: effects.ParticleEffect = null) {
+function SceneExplosion(effect: effects.ParticleEffect = null) {
     const ss = new Sprite(image.screenImage().clone());
     ss.setFlag(7168 | 512, true);
     ss.setPosition(scene.screenWidth() / 2, scene.screenHeight() / 2)
@@ -30,8 +30,15 @@ function SceneTransition(effect: effects.ParticleEffect = null) {
     }
 } 
 
-function TileTransition(location: tiles.Location, effect: effects.ParticleEffect = null) {
-    
+function explode(sprite: Sprite) {
+    control.runInParallel(() => {
+        while (true) sprite.startEffect(effects.disintegrate);
+    })
+}
+
+function TileExplosion(location: tiles.Location, effect: effects.ParticleEffect = null) {
+    const ts = tiles.createTileSprite(location, tiles.getTileAtLocation(location));
+    return () => explode(ts);
 }
 
 let goalStage = 0;
@@ -110,6 +117,11 @@ forever(() => {
 scene.setBackgroundColor(9)
 tiles.setCurrentTilemap(tilemap`level1-1`)
 
+function die() {
+    music.powerDown.play()
+    explode(player.sprite);
+}
+
 scene.onOverlapTile(SpriteKind.Player, assets.tile`moltenCherryJuice`, function(sprite: Sprite, location: tiles.Location) {
     // @ts-ignore-line
     /*
@@ -121,7 +133,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`moltenCherryJuice`, function(
     playerState.dying = true;
     playerState.deathFrames = 10;
     */
-    game.over();
+    die();
 })
 
 function deathAnimation(f: number) {
