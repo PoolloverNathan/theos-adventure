@@ -13,19 +13,39 @@ abstract class Unlockable {
     }
 }
 
+class LevelLink {
+    static links: LevelLink[];
+    constructor(public loader: LevelLoader, public level: [tiles.TileMapData, number]) {
+        LevelLink.links.push(this);
+    }
+    static find(sprite: Sprite) {
+        for (let link of LevelLink.links) {
+            if (link.loader.check(sprite)) {
+                return link;
+            }
+        }
+        return undefined;
+    }
+}
+
 class LevelLoader extends Unlockable {
     constructor(public condition: () => boolean, public location: tiles.Location, public locks: number, public unlocks: Unlockable[]) {
         super();
     }
-    check(sprite: Sprite): boolean {
+    check(sprite: Sprite | tiles.Location): boolean {
+        let tmc = (sprite instanceof Sprite ? sprite.tilemapLocation() : sprite);
         if (!this.unlocked) return false;
-        let tmc = sprite.tilemapLocation();
+        if (!this.condition()) return false;
+        if (!this.overlaps(tmc)) return false;
+        return true;
+    }
+    overlaps(tmc: tiles.Location): boolean {
         let trc = tmc.getNeighboringLocation(CollisionDirection.Left)
         let tdc = tmc.getNeighboringLocation(CollisionDirection.Top);
         let tcc = tdc.getNeighboringLocation(CollisionDirection.Left)
         if (tmc === this.location || trc === this.location
-         || tdc === this.location || tcc === this.location) {
-            return this.condition();
+            || tdc === this.location || tcc === this.location) {
+            return true;
         }
         return false;
     }
@@ -57,9 +77,6 @@ class BlockerLine extends Unlockable {
     }
 }
 
-
-
-let levels = [];
 
 const Coin = SpriteKind.create();
 
